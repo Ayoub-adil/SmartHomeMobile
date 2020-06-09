@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
 /* eslint-disable semi */
 /* eslint-disable space-infix-ops */
 /* eslint-disable no-trailing-spaces */
