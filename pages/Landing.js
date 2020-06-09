@@ -20,7 +20,7 @@ export default class Landing extends Component
 
   start=() =>
   {
-    this.props.navigation.navigate('Sorry!');
+    this.props.navigation.navigate('SignIn');
   }
 
   render()
