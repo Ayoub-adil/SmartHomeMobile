@@ -12,6 +12,7 @@ import Rooms from './pages/Rooms';
 import Bedroom from './pages/Bedroom';
 import livingroom from './pages/livingroom';
 import kitchen from './pages/kitchen';
+import ServerErr from './pages/ServerErr';
 
 const Stack = createStackNavigator();
 
@@ -22,12 +23,14 @@ export default class App extends Component {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Landing" component={Landing} />
+            <Stack.Screen name="Sorry!" component={ServerErr} />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Rooms" component={Rooms} />
             <Stack.Screen name="Bedroom" component={Bedroom} />
             <Stack.Screen name="livingroom" component={livingroom} />
             <Stack.Screen name="kitchen" component={kitchen} />
+            
           </Stack.Navigator>
         </NavigationContainer>
       </View>
