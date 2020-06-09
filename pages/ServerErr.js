@@ -21,7 +21,7 @@ export default class ServerErr extends Component
     return(
     <View style={styles.container}>
         <View style={styles.inner}>
-          <Text style={styles.welcome}>You are not connected to the server</Text>
+          <Text style={styles.welcome}>Sorry ! Something went wrong, try again later </Text>
           <Image
          style={{width:200 , height:280, marginBottom:20 , marginLeft:70, marginTop:7}}
          source={require('../images/ErrServer.jpg')}

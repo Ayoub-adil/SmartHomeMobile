@@ -23,7 +23,7 @@ export default class App extends Component {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Landing" component={Landing} />
-            <Stack.Screen name="ServerErr" component={ServerErr} />
+            <Stack.Screen name="Sorry!" component={ServerErr} />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Rooms" component={Rooms} />
