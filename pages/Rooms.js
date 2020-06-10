@@ -20,6 +20,7 @@ import {
 import Bedroom from './Bedroom';
 import livingroom from './livingroom';
 import kitchen from './kitchen';
+import ServerErr from './ServerErr';
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -31,10 +32,21 @@ export default class Rooms extends Component
     super(props);
     this.api='http://192.168.1.12:5000'
     this.state={
+      server:false,
       plan:'homeSweetHome',
     }
+    this.WorkingServer();
+    this.WorkingServer=this.WorkingServer.bind(this);
+
     this.getplan();
     this.getplan=this.getplan.bind(this);
+  }
+  WorkingServer(){
+    fetch(this.api+'/server').then(res=>res.json()).then(data=>{
+      this.setState({
+        server: data.server,
+      });
+    })
   }
   
   getplan(){
@@ -58,9 +70,11 @@ export default class Rooms extends Component
   render(){
     
     return (
-      <View>
 
-
+        <View style={styles.container}>
+      {this.state.server
+        ?
+        <View>
         <Stack.Navigator>
         <Stack.Screen name="Bedroom" component={Bedroom} />
         <Stack.Screen name="livingroom" component={livingroom} />
@@ -109,6 +123,9 @@ export default class Rooms extends Component
         )
         }
         </ScrollView>
+        </View>
+      :<ServerErr/>
+      }
       </View>
     );
   }
@@ -118,8 +135,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:'#F9F9F9',
-    alignItems: 'center', 
-    justifyContent: 'center'
   },
   item: {
     backgroundColor : '#7AAFFD',

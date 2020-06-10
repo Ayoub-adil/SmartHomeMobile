@@ -1,8 +1,14 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable comma-dangle */
+/* eslint-disable keyword-spacing */
+/* eslint-disable no-trailing-spaces */
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import {
   View,
-  Button,
   Image,
   StyleSheet, 
   Text
@@ -13,7 +19,8 @@ export default class ServerErr extends Component
 
   GoHome=() =>
   {
-    this.props.navigation.goBack();
+    window.location.reload(true);
+    // this.props.navigation.goBack();
   }
 
   render()
@@ -22,14 +29,12 @@ export default class ServerErr extends Component
     <View style={styles.container}>
         <View style={styles.inner}>
           <Text style={styles.welcome2}>Ouups !</Text>
-          <Text style={styles.welcome}>The server is down, try again later. </Text>
+          <Text style={styles.welcome}>The server is down </Text>
           <Image
          style={{width:200 , height:280, marginBottom:20 , marginLeft:70, marginTop:7}}
          source={require('../images/ErrServer.jpg')}
          ></Image>
-          <View style={styles.btnContainer}>
-            <Button title="Go back" onPress={this.GoHome}/>
-          </View>
+         <Text style={styles.welcome}>Please give us some moment to fix the problem ..</Text>
         </View>
     </View>
     );
