@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
+import ServerErr from './ServerErr';
+
 export default class Setting extends Component
 {
 
@@ -24,6 +26,7 @@ export default class Setting extends Component
     super(props);
     this.api='http://192.168.1.12:5000'
     this.state={
+      server:false,
       outsideT:'Conexion au termometre..',
       rain:'Conexion au capteur de pluie..',
       door:'Conexion au capteur..',
@@ -32,12 +35,14 @@ export default class Setting extends Component
       watering:"obtention de l'etat ...",
       mvt:"connexion au capteur de mouvement"
     }
+    this.WorkingServer();
     this.getOutsideTemperature();
     this.getDoorState();
     this.getGarageDoorState();
     this.getAlert();
     this.getMvtLight();
 
+    this.WorkingServer=this.WorkingServer.bind(this);
     this.getOutsideTemperature=this.getOutsideTemperature.bind(this);
     this.getDoorState=this.getDoorState.bind(this);
     this.getGarageDoorState=this.getGarageDoorState.bind(this);
@@ -51,7 +56,13 @@ export default class Setting extends Component
     this.changeMvtLight=this.changeMvtLight.bind(this) 
   }
   
-
+  WorkingServer(){
+    fetch(this.api+'/server').then(res=>res.json()).then(data=>{
+      this.setState({
+        server: data.server,
+      });
+    })
+}
   getOutsideTemperature(){
       fetch(this.api+'/home/outsideTemperature').then(res=>res.json()).then(data=>{
         this.setState({
@@ -95,6 +106,8 @@ export default class Setting extends Component
   {
     return(
     <SafeAreaView style={styles.container}>
+    {this.state.server
+    ?
       <ScrollView>
 
       <View style={styles.list}>
@@ -173,6 +186,8 @@ export default class Setting extends Component
       </View>
 
       </ScrollView>
+    :<ServerErr/>
+    }
     </SafeAreaView>
     );
     }

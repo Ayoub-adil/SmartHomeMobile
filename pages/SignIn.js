@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable eqeqeq */
+/* eslint-disable semi */
+/* eslint-disable space-infix-ops */
+/* eslint-disable comma-dangle */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable quotes */
 /* eslint-disable keyword-spacing */
 import 'react-native-gesture-handler';
@@ -16,6 +18,7 @@ import {
 } from 'react-native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import ServerErr from './ServerErr';
 
 export default class SignIn extends Component
 {
@@ -23,16 +26,27 @@ export default class SignIn extends Component
     super(props);
     this.api='http://192.168.1.12:5000'
     this.state = {
+      server:false,
       Login: '',
       psw:'', 
       islogged: false     
     };
+    this.WorkingServer();
+    this.WorkingServer=this.WorkingServer.bind(this);
     // this.GetTextLogin();
     // this.GetTextPsw();
     this.login();
     // this.GetTextLogin=this.GetTextLogin.bind(this);
     // this.GetTextPsw=this.GetTextPsw.bind(this);
     this.login=this.login.bind(this);
+  }
+
+  WorkingServer(){
+    fetch(this.api+'/server').then(res=>res.json()).then(data=>{
+      this.setState({
+        server: data.server,
+      });
+    })
   }
 
   componentDidMount()
@@ -70,14 +84,15 @@ export default class SignIn extends Component
   render()
   {
     return(
-    <KeyboardAwareScrollView 
-      style={styles.container}>
-      
+      <View style={styles.container}>
+      {this.state.server
+      ?
+    <KeyboardAwareScrollView>
         <View style={styles.inner}>
           <Image
-         style={{width:200 , height:200, marginBottom:20 , marginLeft:70, marginTop:30}}
-         source={require('../images/key4.png')}
-         ></Image>
+            style={{width:200 , height:200, marginBottom:20 , marginLeft:70, marginTop:30}}
+            source={require('../images/key4.png')}
+          />
           <Text style={styles.hello}>Hello <Text style={styles.user}>User</Text></Text>
           <Text style={styles.txt}>Authenticate your account</Text>
           <TextInput placeholder="Login" style={styles.textInput} onChangeText={(login) => this.setState({login})}/>
@@ -86,8 +101,10 @@ export default class SignIn extends Component
             <Button title="Sign in" onPress={this.login} />
           </View>
         </View>
-        
     </KeyboardAwareScrollView >
+    :<ServerErr/>
+    }
+    </View>
     );
   }
 }
