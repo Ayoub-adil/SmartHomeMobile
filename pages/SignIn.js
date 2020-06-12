@@ -12,24 +12,66 @@ import {
   Button,
   Image,
   Text,
-  StyleSheet,
-  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard
+  StyleSheet
 } from 'react-native';
+
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 export default class SignIn extends Component
 {
-  show1=() =>
+  constructor(props){
+    super(props);
+    this.api='http://192.168.1.12:5000'
+    this.state = {
+      Login: '',
+      psw:'', 
+      islogged: false     
+    };
+    // this.GetTextLogin();
+    // this.GetTextPsw();
+    this.login();
+    // this.GetTextLogin=this.GetTextLogin.bind(this);
+    // this.GetTextPsw=this.GetTextPsw.bind(this);
+    this.login=this.login.bind(this);
+  }
+
+  componentDidMount()
   {
-    this.props.navigation.navigate('Home');
+    fetch(this.api+'/user/loginMobile')
+		.then(res=>res.json())
+    .then(data=>{this.setState({ islogged : data.islogged })})
+    
+    if (islogged=true){
+      this.props.navigation.navigate('Home')
+    }
+    else{this.props.navigation.navigate('SignIn')}
+  }
+
+  login()
+  {
+    // this.props.navigation.navigate('Home');
+    let collection = {}
+    collection.login=this.state.login,
+    collection.psw=this.state.psw
+
+    let response = await fetch(this.api+'/user/loginMobile', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(collection)
+    });
+    
+    let result = await response.json();
+
   }
 
   render()
   {
     return(
     <KeyboardAwareScrollView 
-      style={styles.container}
-    >
+      style={styles.container}>
       
         <View style={styles.inner}>
           <Image
@@ -38,13 +80,13 @@ export default class SignIn extends Component
          ></Image>
           <Text style={styles.hello}>Hello <Text style={styles.user}>User</Text></Text>
           <Text style={styles.txt}>Authenticate your account</Text>
-          <TextInput placeholder="Login" style={styles.textInput} />
-          <TextInput placeholder="Password" style={styles.textInput} />
+          <TextInput placeholder="Login" style={styles.textInput} onChangeText={(login) => this.setState({login})}/>
+          <TextInput placeholder="Password" style={styles.textInput} onChangeText={(psw) => this.setState({psw})}/>
           <View style={styles.btnContainer}>
-            <Button title="Sign in" onPress={this.show1} />
+            <Button title="Sign in" onPress={this.login} />
           </View>
         </View>
-     
+        
     </KeyboardAwareScrollView >
     );
   }

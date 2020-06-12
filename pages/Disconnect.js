@@ -16,7 +16,6 @@ export default class Disconnect extends Component
     return(
     <View style={styles.container}>
       <FontAwesome5 style={styles.icon} size={80} name="frown" solid />
-      <Text style={styles.titre}>Ouups!</Text>
       <Text style={styles.txt}>Are you sure you want to disconnect from the application ?</Text>
       <Button style={styles.btn} title="Disconnect"/>
     </View>
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
   },
   txt: {
     fontSize: 18,
-    margin:20,
+    margin:25,
     textAlign: "center"
   },
   titre: {
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     color:"#007bff",
-    margin: 30
+    margin: 20
   }
 });
 

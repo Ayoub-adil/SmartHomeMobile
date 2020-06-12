@@ -65,14 +65,14 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   welcome: {
-    fontSize: 32,
+    fontSize: 27,
     fontWeight:'bold',
     marginTop:20
   },
   txt: {
     marginBottom: 20,
     fontSize:18,
-    marginTop:-30
+    marginTop:-20
   },
   smarthome: {
     color:'#007bff'
