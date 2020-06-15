@@ -27,7 +27,7 @@ export default class SignIn extends Component
     this.api='http://192.168.1.12:5000'
     this.state = {
       server:false,
-      Login: '',
+      login: '',
       psw:'', 
       islogged: false     
     };
@@ -58,7 +58,7 @@ export default class SignIn extends Component
     if (islogged=true){
       this.props.navigation.navigate('Home')
     }
-    else{this.props.navigation.navigate('SignIn')}
+    else {this.props.navigation.navigate('SignIn')}
   }
 
   login()
@@ -68,16 +68,15 @@ export default class SignIn extends Component
     collection.login=this.state.login,
     collection.psw=this.state.psw
 
-    let response = await fetch(this.api+'/user/loginMobile', {
+    let req  = fetch(this.api+'/user/loginMobile', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(collection)
-    });
-    
-    let result = await response.json();
+      body: JSON.stringify({dt:collection})
+    })
+    let res = req.json();
 
   }
 
