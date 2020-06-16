@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-extra-semi */
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable space-infix-ops */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable semi */
@@ -20,7 +22,6 @@ import {
 import Bedroom from './Bedroom';
 import livingroom from './livingroom';
 import kitchen from './kitchen';
-import ServerErr from './ServerErr';
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -33,38 +34,46 @@ export default class Rooms extends Component
     this.api='http://192.168.1.12:5000'
     this.state={
       server:false,
+      islogged: false ,
       plan:'homeSweetHome',
     }
-    this.WorkingServer();
-    this.WorkingServer=this.WorkingServer.bind(this);
-
-    this.getplan();
-    this.getplan=this.getplan.bind(this);
+    this.fill();
+    this.fill=this.fill.bind(this);
   }
-  WorkingServer(){
-    fetch(this.api+'/server').then(res=>res.json()).then(data=>{
-      this.setState({
-        server: data.server,
-      });
-    })
+
+  fill(){
+    fetch(this.api+'/server')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({server: data.server});
+        data.server?null:this.props.navigation.navigate('Sorry!')
+      })
+    fetch(this.api+'/user/loginMobile')
+		  .then(res=>res.json())
+      .then(data=>{
+        this.setState({ islogged : data.islogged })
+        data.islogged?null:this.props.navigation.navigate('SignIn')
+      })
+    fetch(this.api+'/home/plan')
+      .then(res=>res.json())
+      .then(data=>{this.setState({ plan: data.plan })})
   }
   
-  getplan(){
-  fetch(this.api+'/home/plan').then(res=>res.json()).then(data=>{
-      this.setState({ plan: data.plan })
+  
+  onB=(t,r) =>
+  {
+    fetch(this.api+'/change/rooom', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        typeofroom:t,
+        rooom:r,
       })
-  }
-  onB=() =>
-  {
-    this.props.navigation.navigate('Bedroom');
-  }
-  onL=() =>
-  {
-    this.props.navigation.navigate('livingroom');
-  }
-  onK=() =>
-  {
-    this.props.navigation.navigate('kitchen');
+    })
+    this.props.navigation.navigate(t);
   }
 
   render(){
@@ -72,9 +81,7 @@ export default class Rooms extends Component
     return (
 
         <View style={styles.container}>
-      {this.state.server
-        ?
-        <View>
+
         <Stack.Navigator>
         <Stack.Screen name="Bedroom" component={Bedroom} />
         <Stack.Screen name="livingroom" component={livingroom} />
@@ -83,9 +90,10 @@ export default class Rooms extends Component
 
 
         <ScrollView>
+
         <Text style = {styles.tit}>Bedrooms</Text>
         {[...Array(this.state.plan.bedroom)].map((e,i)=>
-          <TouchableOpacity style={styles.button} onPress={this.onB}>
+          <TouchableOpacity style={styles.button}onPress={()=>{this.onB("bedroom",i)}}>
             <View style = {styles.item}>
               <Image
                 style={{width:50 , height:32}}
@@ -98,7 +106,7 @@ export default class Rooms extends Component
         }
         <Text style = {styles.tit}>livingrooms</Text>
         {[...Array(this.state.plan.livingroom)].map((e,i)=>
-          <TouchableOpacity style={styles.button} onPress={this.onL}>
+          <TouchableOpacity style={styles.button} onPress={()=>{this.onB("livingroom",i)}}>
             <View style = {styles.item}>
               <Image
                 style={{width:50 , height:32}}
@@ -111,7 +119,7 @@ export default class Rooms extends Component
         }
         <Text style = {styles.tit}>kitchens</Text>
         {[...Array(this.state.plan.kitchen)].map((e,i)=>
-          <TouchableOpacity style={styles.button} onPress={this.onK}>
+          <TouchableOpacity style={styles.button} onPress={()=>{this.onB("kitchen",i)}}>
             <View style = {styles.item}>
               <Image
                 style={{width:50 , height:32}}
@@ -123,12 +131,9 @@ export default class Rooms extends Component
         )
         }
         </ScrollView>
-        </View>
-      :<ServerErr/>
-      }
       </View>
     );
-  }
+  };
 }
 
 const styles = StyleSheet.create({

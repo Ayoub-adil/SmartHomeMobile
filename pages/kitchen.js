@@ -17,39 +17,48 @@ import { Switch } from 'react-native-gesture-handler';
 
 
 
-export default class kitchen extends Component
-{
+export default class kitchen extends Component{
   constructor(props){
     super(props);
-    this.state={
-        rooom:0,
-        window:'broken',      
-    } 
-    this.getRoom();  
-    this.getWindowState();
-
-    this.getRoom=this.getRoom.bind(this)
-    this.getWindowState=this.getWindowState.bind(this);
+    this.api='http://192.168.1.12:5000'
+    this.state = {
+      server:false,
+      islogged: false ,
+      rooom:0,
+      window:'broken',      
+    };
+    this.fill();  
+    this.fill=this.fill.bind(this)
 
     this.changeWindowState=this.changeWindowState.bind(this) 
   }
-  getRoom(){
-    fetch('/home/room').then(res=>res.json()).then(data=>{
+
+  fill(){
+    fetch(this.api+'/server')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({server: data.server});
+        data.server?null:this.props.navigation.navigate('Sorry!')
+      })
+    fetch(this.api+'/user/loginMobile')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({ islogged : data.islogged })
+        data.islogged?null:this.props.navigation.navigate('SignIn')
+      })
+    fetch(this.api+'/home/room').then(res=>res.json()).then(data=>{
       this.setState({ rooom: data.room })
     })
-    console.log(this.state.rooom)
-  }
-
-  getWindowState(){
-    fetch('/home/window').then(res=>res.json()).then(data=>{
-      this.setState({ window: data.kitchen[this.state.rooom] })
-    })
+    fetch(this.api+'/home/window').then(res=>res.json()).then(data=>{
+      this.setState({ window: data.bedroom[this.state.rooom] })
+    })  
   }
   
+  
   changeWindowState() {
-    fetch('/change/window');
-    this.getWindowState();
-}
+    fetch(this.api+'/change/window');
+    this.fill();
+  }
   render() {
     return (
     <View style={styles.container}>
@@ -59,9 +68,12 @@ export default class kitchen extends Component
          ></Image>
 
          <View style={styles.device}>
-           <Text style={{fontSize:25, margin: 10}}>Window : </Text>
-           <Switch value={this.state.switchValue} onValueChange={(switchValue) => this.setState({switchValue})} />
-           <Text style={{fontSize:25, margin: 10}}>{this.state.switchValue ? 'opened' : 'closed'}</Text>
+           <Text style={{fontSize:20, margin: 10}}>Window :</Text>
+            <Switch 
+              value={this.state.window==='opened'?true:false} 
+              onValueChange={this.changeWindowState}
+            />
+           <Text style={{fontSize:25, margin: 10}}>{this.state.window}</Text>
          </View>
 
     </View>

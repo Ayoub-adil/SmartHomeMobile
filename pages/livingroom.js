@@ -15,7 +15,9 @@ export default class livingroom extends Component {
     super(props);
     this.api='http://192.168.1.12:5000'
     this.state = {
-      rooom:1,
+      server:false,
+      islogged: false ,
+      rooom:0,
       lamp: "broken",
       window:'broken',      
       climatiseur:"broken",
@@ -23,15 +25,11 @@ export default class livingroom extends Component {
       temp: 0,
 
     };
-    // this.getRoom();  
-    this.getLampState();
-    this.getTemperature();
-    this.getWindowState();
+    this.fill();  
 
-    // this.getRoom=this.getRoom.bind(this)
-    this.getLampState=this.getLampState.bind(this)
-    this.getTemperature=this.getTemperature.bind(this);
-    this.getWindowState=this.getWindowState.bind(this);
+
+    this.fill=this.fill.bind(this)
+
 
     this.changeLampState=this.changeLampState.bind(this) 
     // this.handleTemperature=this.handleTemperature.bind(this) 
@@ -41,33 +39,35 @@ export default class livingroom extends Component {
     this.changeWindowState=this.changeWindowState.bind(this) 
   }
 
-  getRoom(){
+  fill(){
+    fetch(this.api+'/server')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({server: data.server});
+        data.server?null:this.props.navigation.navigate('Sorry!')
+      })
+    fetch(this.api+'/user/loginMobile')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({ islogged : data.islogged })
+        data.islogged?null:this.props.navigation.navigate('SignIn')
+      })
     fetch(this.api+'/home/room').then(res=>res.json()).then(data=>{
       this.setState({ rooom: data.room })
     })
-    console.log(this.state.rooom)
-  }
-
-  getLampState(){
     fetch(this.api+'/home/lamp').then(res=>res.json()).then(data=>{
-      this.setState({ lamp: data.livingroom[this.state.rooom] })
+      this.setState({ lamp: data.bedroom[this.state.rooom] })
     })
-  }
-
-  getTemperature(){
     fetch(this.api+'/home/temperature').then(res=>res.json()).then(data=>{
       this.setState({
-        temperature: data.temperature.livingroom[this.state.rooom],
-        temp: data.temperature.livingroom[this.state.rooom],
-        climatiseur: data.airConditioner.livingroom[this.state.rooom], 
+        temperature: data.temperature.bedroom[this.state.rooom],
+        temp: data.temperature.bedroom[this.state.rooom],
+        climatiseur: data.airConditioner.bedroom[this.state.rooom], 
       })
     })
-  }
-
-  getWindowState(){
     fetch(this.api+'/home/window').then(res=>res.json()).then(data=>{
-      this.setState({ window: data.livingroom[this.state.rooom] })
-    })
+      this.setState({ window: data.bedroom[this.state.rooom] })
+    })  
   }
 
   render() {
@@ -118,7 +118,7 @@ export default class livingroom extends Component {
   }
   changeLampState() {
     fetch(this.api+'/change/lamp');
-    this.getLampState();
+    this.fill();
     //console.log(this.state.temperature)
   }
 
@@ -156,7 +156,7 @@ export default class livingroom extends Component {
 
   changeWindowState() {
     fetch(this.api+'/change/window');
-    this.getWindowState();
+    this.fill();
   }
 }
 const styles = StyleSheet.create({

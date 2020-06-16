@@ -1,4 +1,7 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable semi */
+/* eslint-disable space-infix-ops */
 /* eslint-disable comma-dangle */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
@@ -17,10 +20,45 @@ import {
 
 export default class Landing extends Component
 {
+  constructor(props){
+    super(props);
+    this.api='http://192.168.1.12:5000'
+    this.state = {
+      server:false,
+      islogged: false ,
+    };
+    this.fill();
+    this.fill=this.fill.bind(this);
+    
+    this.restart();
+    this.restart=this.restart.bind(this);
+
+  }
+  fill(){
+    fetch(this.api+'/server')
+      .then(res=>res.json())
+      .then(data=>{this.setState({server: data.server,})})
+    fetch(this.api+'/user/loginMobile')
+		  .then(res=>res.json())
+      .then(data=>{this.setState({ islogged : data.islogged})})
+  }
+
+  restart()
+	{
+    fetch('/SuperAdmin/message')
+  }
 
   start=() =>
   {
-    this.props.navigation.navigate('SignIn');
+    if(this.state.server){
+      this.restart()
+      this.state.islogged
+        ?this.props.navigation.navigate('Home')
+        :this.props.navigation.navigate('SignIn');      
+    }
+    else{
+      this.props.navigation.navigate('Sorry!')
+    }
   }
 
   render()

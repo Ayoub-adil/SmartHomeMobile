@@ -27,7 +27,7 @@ export default class App extends Component {
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Rooms" component={Rooms} />
-            <Stack.Screen name="Bedroom" component={Bedroom} />
+            <Stack.Screen name="bedroom" component={Bedroom} />
             <Stack.Screen name="livingroom" component={livingroom} />
             <Stack.Screen name="kitchen" component={kitchen} />
             

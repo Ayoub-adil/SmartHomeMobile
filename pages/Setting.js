@@ -17,8 +17,6 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import ServerErr from './ServerErr';
-
 export default class Setting extends Component
 {
 
@@ -27,6 +25,9 @@ export default class Setting extends Component
     this.api='http://192.168.1.12:5000'
     this.state={
       server:false,
+      islogged: false ,
+      plan:'homeSweetHome',
+
       outsideT:'Conexion au termometre..',
       rain:'Conexion au capteur de pluie..',
       door:'Conexion au capteur..',
@@ -35,19 +36,8 @@ export default class Setting extends Component
       watering:"obtention de l'etat ...",
       mvt:"connexion au capteur de mouvement"
     }
-    this.WorkingServer();
-    this.getOutsideTemperature();
-    this.getDoorState();
-    this.getGarageDoorState();
-    this.getAlert();
-    this.getMvtLight();
-
-    this.WorkingServer=this.WorkingServer.bind(this);
-    this.getOutsideTemperature=this.getOutsideTemperature.bind(this);
-    this.getDoorState=this.getDoorState.bind(this);
-    this.getGarageDoorState=this.getGarageDoorState.bind(this);
-    this.getAlert=this.getAlert.bind(this);
-    this.getMvtLight=this.getMvtLight.bind(this);
+    this.fill();
+    this.fill=this.fill.bind(this);
 
     this.changeDoorState=this.changeDoorState.bind(this) 
     this.changeGarageDoorState=this.changeGarageDoorState.bind(this) 
@@ -56,49 +46,39 @@ export default class Setting extends Component
     this.changeMvtLight=this.changeMvtLight.bind(this) 
   }
   
-  WorkingServer(){
-    fetch(this.api+'/server').then(res=>res.json()).then(data=>{
-      this.setState({
-        server: data.server,
-      });
-    })
-}
-  getOutsideTemperature(){
-      fetch(this.api+'/home/outsideTemperature').then(res=>res.json()).then(data=>{
-        this.setState({
-          outsideT: data.outsideTemperature,
-          rain: data.rain[0],
-        });
+  fill(){
+    fetch(this.api+'/server')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({server: data.server});
+        data.server?null:this.props.navigation.navigate('Sorry!')
       })
-  }
-  getDoorState(){
-      fetch(this.api+'/home/door').then(res=>res.json()).then(data=>{
-        this.setState({
-          door: data.door,
-        });
+    fetch(this.api+'/user/loginMobile')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({ islogged : data.islogged })
+        data.islogged?null:this.props.navigation.navigate('SignIn')
       })
-  }
-  getGarageDoorState(){
-      fetch(this.api+'/home/garageDoor').then(res=>res.json()).then(data=>{
-        this.setState({
-          garageDoor: data.garageDoor,
-        });
-      })
-  }
-  getAlert(){
-      fetch(this.api+'/home/alert').then(res=>res.json()).then(data=>{
-        this.setState({
-          alert: data.alert,
-          watering: data.watering,
-        });
-      })
-  }
-  getMvtLight(){
-      fetch(this.api+'/home/mvtLight').then(res=>res.json()).then(data=>{
-        this.setState({
-          mvt: data.mvt,
-        });
-      })
+
+    fetch(this.api+'/home/plan')
+      .then(res=>res.json())
+      .then(data=>{this.setState({ plan: data.plan })})
+    fetch(this.api+'/home/outsideTemperature')
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({outsideT: data.outsideTemperature,rain: data.rain[0]});})
+    fetch(this.api+'/home/door')
+      .then(res=>res.json())
+      .then(data=>{this.setState({door: data.door,});})
+    fetch(this.api+'/home/garageDoor')
+      .then(res=>res.json())
+      .then(data=>{this.setState({garageDoor: data.garageDoor,});})
+    fetch(this.api+'/home/alert')
+      .then(res=>res.json())
+      .then(data=>{this.setState({alert: data.alert,watering: data.watering,});})
+    fetch(this.api+'/home/mvtLight')
+      .then(res=>res.json())
+      .then(data=>{this.setState({mvt: data.mvt,});})
   }
 
   
@@ -106,8 +86,7 @@ export default class Setting extends Component
   {
     return(
     <SafeAreaView style={styles.container}>
-    {this.state.server
-    ?
+
       <ScrollView>
 
       <View style={styles.list}>
@@ -116,7 +95,7 @@ export default class Setting extends Component
           <Text style={styles.txt}>Weather</Text>
         </View>
         <View>
-          <Text style={styles.txt}>{this.state.rain?null:<Text>Pas de </Text>}Pluie</Text>
+          <Text style={styles.txt}>{this.state.rain?null:<Text>Not </Text>}Rainy</Text>
           <Text style={styles.txt}>{this.state.outsideT}°C</Text>
         </View>
       </View>
@@ -143,6 +122,7 @@ export default class Setting extends Component
         </View>
       </View>
 
+      {this.state.plan.stairs===0?null:
       <View style={styles.list}>
         <View>
           <FontAwesome5 style={styles.icon} size={20} name="lightbulb" solid />
@@ -156,6 +136,7 @@ export default class Setting extends Component
         />
         </View>
       </View>
+      }
 
       <View style={styles.list}>
         <View>
@@ -171,6 +152,7 @@ export default class Setting extends Component
         </View>
       </View>
 
+      {this.state.plan.garage===0?null:
       <View style={styles.list}>
         <View>
           <FontAwesome5 style={styles.icon} size={20} name="door-open" />
@@ -184,10 +166,9 @@ export default class Setting extends Component
         />
         </View>
       </View>
+      }
 
       </ScrollView>
-    :<ServerErr/>
-    }
     </SafeAreaView>
     );
     }
