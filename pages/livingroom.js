@@ -35,7 +35,7 @@ export default class livingroom extends Component {
     // this.handleTemperature=this.handleTemperature.bind(this) 
     // this.handleTemperatureinput=this.handleTemperatureinput.bind(this) 
     // this.changeTemperature=this.changeTemperature.bind(this) 
-    // this.changeAirConditionerState=this.changeAirConditionerState.bind(this) 
+    this.changeAirConditionerState=this.changeAirConditionerState.bind(this) 
     this.changeWindowState=this.changeWindowState.bind(this) 
   }
 
@@ -73,10 +73,20 @@ export default class livingroom extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <ScrollView> */}
+        <ScrollView>
         <Image
           style={styles.img}
           source={require('../images/LivingroomRoom.png')}></Image>
+          
+        <View style={styles.device}>
+          <Text style={styles.text}>Climatiseur : {this.state.climatiseur}</Text>
+          <Switch 
+            trackColor={{true: '#7AAFFD', false: 'grey'}}
+            thumbColor='#007bff'
+            value={this.state.climatiseur==="on"?true:false} 
+            onValueChange={this.changeAirConditionerState} 
+          />
+        </View>
 
           <View style={styles.device}>
           <Text style={styles.text}>Temperature</Text>
@@ -96,6 +106,8 @@ export default class livingroom extends Component {
         <View style={styles.device}>
           <Text style={styles.text}>Light : {this.state.lamp}</Text>
           <Switch 
+            trackColor={{true: '#7AAFFD', false: 'grey'}}
+            thumbColor='#007bff'
             value={this.state.lamp==="on"?true:false} 
             onValueChange={this.changeLampState} 
           />
@@ -104,6 +116,8 @@ export default class livingroom extends Component {
         <View style={styles.device}>
           <Text style={styles.text}>Window : {this.state.window}</Text>
           <Switch 
+            trackColor={{true: '#7AAFFD', false: 'grey'}}
+            thumbColor='#007bff'
             value={this.state.window==='opened'?true:false} 
             onValueChange={this.changeWindowState} 
           />
@@ -112,7 +126,7 @@ export default class livingroom extends Component {
 
 
         {/* <Button title="change" onPress={this.change}></Button> */}
-        {/* </ScrollView> */}
+        </ScrollView>
       </View>
     );
   }

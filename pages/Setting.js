@@ -108,6 +108,8 @@ export default class Setting extends Component
         <View>
           <Text style={styles.txt}>Watering : {this.state.watering} </Text>
           <Switch
+            trackColor={{true: '#7AAFFD', false: 'grey'}}
+            thumbColor='#007bff'
             style={styles.swch}
             onValueChange={this.changeWatering}
             value={this.state.watering==='on'?true:false} 
@@ -116,8 +118,10 @@ export default class Setting extends Component
         <View>
           <Text style={styles.txt}>Alarm : {this.state.alert}</Text>
           <Switch
-        onValueChange={this.changeAlert}
-        value={this.state.alert==='on'?true:false} 
+          trackColor={{true: '#7AAFFD', false: 'grey'}}
+          thumbColor='#007bff'
+          onValueChange={this.changeAlert}
+          value={this.state.alert==='on'?true:false} 
         />
         </View>
       </View>
@@ -131,6 +135,8 @@ export default class Setting extends Component
         <View>
           <Text style={styles.txt}>{this.state.mvt?<Text>on </Text>:<Text>off </Text>}</Text>
           <Switch
+        trackColor={{true: '#7AAFFD', false: 'grey'}}
+        thumbColor='#007bff'
         onValueChange={this.changeMvtLight} 
         value={this.state.mvt} 
         />
@@ -146,6 +152,8 @@ export default class Setting extends Component
         <View>
           <Text style={styles.txt}>{this.state.door?<Text>Locked </Text>:<Text>Unlocked </Text>} </Text>
           <Switch
+        trackColor={{true: '#7AAFFD', false: 'grey'}}
+        thumbColor='#007bff'
         onValueChange={this.changeDoorState} 
         value={this.state.door}
         />
@@ -161,6 +169,8 @@ export default class Setting extends Component
         <View>
           <Text style={styles.txt}>{this.state.garageDoor} </Text>
           <Switch
+        trackColor={{true: '#7AAFFD', false: 'grey'}}
+        thumbColor='#007bff'
         onValueChange={this.changeGarageDoorState} 
         value={this.state.garageDoor==="opened"?true:false} 
         />

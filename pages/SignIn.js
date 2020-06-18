@@ -30,9 +30,9 @@ export default class SignIn extends Component
     this.state = {
       server:false,
       islogged: false ,
-
       login: '',
       psw:'', 
+      msg:'pas de message',
     };
 
     this.fill();
@@ -53,7 +53,7 @@ export default class SignIn extends Component
     fetch(this.api+'/user/loginMobile')
 		  .then(res=>res.json())
       .then(data=>{
-        this.setState({ islogged : data.islogged })
+        this.setState({ islogged : data.islogged , msg : data.msg })
         data.islogged?this.props.navigation.navigate('Home'):null
     })
   }
@@ -88,8 +88,9 @@ export default class SignIn extends Component
     <Text style={styles.hello}>Hello <Text style={styles.user}>User</Text></Text>
     <Text style={styles.txt}>Authenticate your account</Text>
     <TextInput placeholder="Login" style={styles.textInput} onChangeText={(login) => this.setState({login})}/>
-    <TextInput placeholder="Password" style={styles.textInput} onChangeText={(psw) => this.setState({psw})}/>
+    <TextInput placeholder="Password" secureTextEntry={true} style={styles.textInput} onChangeText={(psw) => this.setState({psw})}/>
     <View style={styles.btnContainer}>
+    {(this.state.msg === "pas de message")? null:<Text style={styles.err}>{this.state.msg}</Text>}
       <Button title="Sign in" onPress={this.login} />
     </View>
   </View>
@@ -137,6 +138,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize:18,
     marginTop:-10
+  },
+  err: {
+    color: "red",
+    textAlign:"center",
+    marginBottom:20,
+    fontWeight:"bold"
   },
 });
 

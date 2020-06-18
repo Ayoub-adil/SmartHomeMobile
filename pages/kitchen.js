@@ -70,6 +70,8 @@ export default class kitchen extends Component{
          <View style={styles.device}>
            <Text style={{fontSize:20, margin: 10}}>Window :</Text>
             <Switch 
+              trackColor={{true: '#7AAFFD', false: 'grey'}}
+              thumbColor='#007bff'
               value={this.state.window==='opened'?true:false} 
               onValueChange={this.changeWindowState}
             />
