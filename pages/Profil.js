@@ -5,14 +5,34 @@ import {TextInput, StyleSheet, Text,Modal, View,
 
 export default class Profil extends Component
 {
-    state = {
-      modalVisible: false
+  constructor(props){
+    super(props);
+    this.api='http://192.168.1.12:5000'
+    this.state = {
+      modalVisible: false,
+      login: '',
+      psw:'', 
     };
-  
-    setModalVisible = (visible) => {
-      this.setState({ modalVisible: visible });
-    }
-  
+  }
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  }
+
+  Add=async () =>
+  {
+    await fetch(this.api+'/UserFormMobile', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        login:this.state.login,
+        psw:this.state.psw,
+      })
+    })
+  }
+
   render()
   {
     const { modalVisible } = this.state;
@@ -30,16 +50,22 @@ export default class Profil extends Component
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Add Users here :</Text>
-              <TextInput placeholder="Login" style={styles.textInput} />
-              <TextInput placeholder="Password" style={styles.textInput} />
-
+              <TextInput placeholder="Login" style={styles.textInput} onChangeText={(login) => this.setState({login})} />
+              <TextInput placeholder="Password" style={styles.textInput} onChangeText={(psw) => this.setState({psw})} />
+              
               <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={this.Add}
+              >
+                <Text style={styles.textStyle}>Add</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" , marginTop:20 }}
                 onPress={() => {
                   this.setModalVisible(!modalVisible);
                 }}
               >
-                <Text style={styles.textStyle}>Submit</Text>
+                <Text style={styles.textStyle}>Go back</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -51,14 +77,7 @@ export default class Profil extends Component
          source={require('../images/profil.png')}
          ></Image>
          <Text style={styles.txt}>Hello, You are the administrator of your own Home!</Text>
-         <Text style={styles.txt}>You can Add or change users in this application.</Text>
-{/* 
-         <TouchableOpacity
-        style={styles.button}
-        onPress={this.onPress3}
-      >
-         <Text style={{color:'#F9F9F9' , fontWeight:'bold', fontSize:18}}>View Users</Text>
-         </TouchableOpacity> */}
+         <Text style={styles.txt}>Your family members can join us.</Text>
 
          <TouchableOpacity
         style={styles.button}
@@ -66,8 +85,13 @@ export default class Profil extends Component
           this.setModalVisible(true);
         }}
       >
-         <Text style={{color:'#F9F9F9' , fontWeight:'bold', fontSize:18}}>Add Users</Text>
+         <Text style={{color:'#F9F9F9' , fontWeight:'bold', fontSize:18}}>Add Member</Text>
          </TouchableOpacity>
+
+         <View style={styles.flexo}>
+           <View style={styles.row}><Text style={{color:"#007bff" , fontWeight:"bold"}}>Login</Text></View>
+           <View style={styles.row}><Text style={{color:"#007bff" , fontWeight:"bold"}}>Password</Text></View>
+         </View>
       </View>
     );
   }
@@ -124,5 +148,12 @@ const styles = StyleSheet.create({
     borderColor: "#000000",
     borderBottomWidth: 1,
     marginBottom: 30
+  },
+  flexo: {
+    display:"flex",
+    flexDirection:"row"
+  },
+  row: {
+    margin:30
   }
 })
