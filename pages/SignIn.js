@@ -33,11 +33,14 @@ export default class SignIn extends Component
       login: '',
       psw:'', 
       msg:'pas de message',
+      usermob: 'user',
     };
 
     this.fill();
     this.fill=this.fill.bind(this);
 
+    this.session();
+    this.session=this.session.bind(this);
     // this.sess=this.sess.bind(this);
     // this.login=this.login.bind(this);
     // this.start=this.start.bind(this);
@@ -57,6 +60,13 @@ export default class SignIn extends Component
         data.islogged?this.props.navigation.navigate('Home'):null
     })
   }
+
+  session(){
+    fetch(this.api+'/sessionMob')
+    .then(res=>res.json())
+    .then(data=>{this.setState({ usermob: data.usermob })})
+    }
+
   
   login=async () =>
   {

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {TextInput, StyleSheet, Text,Modal, View,
-        Dimensions,TouchableOpacity,Button,Alert,Image,
+  ScrollView,TouchableOpacity,Button,Alert,Image,
         TouchableHighlight,StatusBar} from 'react-native';
+
+import TabUsers from './TabUsers';
 
 export default class Profil extends Component
 {
@@ -11,12 +13,28 @@ export default class Profil extends Component
     this.state = {
       modalVisible: false,
       login: '',
-      psw:'', 
+      psw:'',
+      logintab:'',
+      pswtab:'',
+      usermob: 'user',
     };
+
+    this.session();
+    this.session=this.session.bind(this);
+
+    this.getUsers();
+    this.getUsers=this.forceUpdate.bind(this)
+
   }
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   }
+
+  session(){
+    fetch(this.api+'/sessionMob')
+    .then(res=>res.json())
+    .then(data=>{this.setState({ usermob: data.usermob })})
+    }
 
   Add=async () =>
   {
@@ -33,12 +51,21 @@ export default class Profil extends Component
     })
   }
 
+  getUsers(){
+    fetch(this.api+'users/tab')
+    .then(res=>res.json())
+    .then(data=>{this.setState({
+      logintab : data.login,
+      pswtab:data.psw
+    })})
+  }
+
   render()
   {
     const { modalVisible } = this.state;
     return (
       <View style={styles.container}>
-        
+        {/* <ScrollView> */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -76,7 +103,7 @@ export default class Profil extends Component
          style={{width:150 , height:150, marginBottom:30}}
          source={require('../images/profil.png')}
          ></Image>
-         <Text style={styles.txt}>Hello, You are the administrator of your own Home!</Text>
+         <Text style={styles.txt}>Hello {this.state.usermob}, You are the administrator of your own Home!</Text>
          <Text style={styles.txt}>Your family members can join us.</Text>
 
          <TouchableOpacity
@@ -88,10 +115,20 @@ export default class Profil extends Component
          <Text style={{color:'#F9F9F9' , fontWeight:'bold', fontSize:18}}>Add Member</Text>
          </TouchableOpacity>
 
+         <TabUsers/>
+
+         {[...this.state.logintab].map((e,i)=>
          <View style={styles.flexo}>
-           <View style={styles.row}><Text style={{color:"#007bff" , fontWeight:"bold"}}>Login</Text></View>
-           <View style={styles.row}><Text style={{color:"#007bff" , fontWeight:"bold"}}>Password</Text></View>
-         </View>
+           <View style={styles.row}>
+             <Text style={{color:"#007bff" , fontWeight:"bold"}}>Login</Text>
+             <Text>{this.state.logintab[i]}</Text>
+             </View>
+           <View style={styles.row}>
+             <Text style={{color:"#007bff" , fontWeight:"bold"}}>Password</Text>
+             <Text>{this.state.pswtab[i]}</Text>
+             </View>
+         </View>)}
+         {/* </ScrollView> */}
       </View>
     );
   }
@@ -105,7 +142,9 @@ const styles = StyleSheet.create({
   },
   txt: {
     marginTop:10,
-    fontSize:15
+    marginLeft:5,
+    fontSize:15,
+    textAlign:"center"
   },
   button: {
     backgroundColor:"#7AAFFD",

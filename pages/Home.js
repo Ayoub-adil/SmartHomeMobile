@@ -16,7 +16,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import Rooms from './Rooms';
-import Profil from './Profil';
+import Family from './Profil';
 import Disconnect from './Disconnect';
 import Setting from './Setting';
 
@@ -38,7 +38,7 @@ export default class Home extends Component
             iconName = focused ? 'home' : 'home';
           } else if (route.name === 'Setting') {
             iconName = focused ? 'cog' : 'cog';
-          } else if (route.name === 'Profil') {
+          } else if (route.name === 'Family') {
             iconName = focused ? 'user' : 'user';
           } else if (route.name === 'Disconnect') {
             iconName = focused ? 'sign-out-alt' : 'sign-out-alt';
@@ -54,7 +54,7 @@ export default class Home extends Component
       >
         <Tab.Screen name="Rooms" component={Rooms}/>
         <Tab.Screen name="Setting" component={Setting} />
-        <Tab.Screen name="Profil" component={Profil} />
+        <Tab.Screen name="Family" component={Family} />
         <Tab.Screen name="Disconnect" component={Disconnect} />
       </Tab.Navigator>
     

@@ -23,7 +23,6 @@ import Bedroom from './Bedroom';
 import livingroom from './livingroom';
 import kitchen from './kitchen';
 
-
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
