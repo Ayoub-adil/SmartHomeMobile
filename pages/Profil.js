@@ -17,13 +17,17 @@ export default class Profil extends Component
       logintab:'',
       pswtab:'',
       usermob: 'user',
+      msgMemberMob : "pas de message",
     };
 
     this.session();
     this.session=this.session.bind(this);
 
-    this.getUsers();
-    this.getUsers=this.forceUpdate.bind(this)
+    this.AddUser();
+    this.AddUser=this.AddUser.bind(this)
+    
+    // this.getUsers();
+    // this.getUsers=this.forceUpdate.bind(this)
 
   }
   setModalVisible = (visible) => {
@@ -35,6 +39,12 @@ export default class Profil extends Component
     .then(res=>res.json())
     .then(data=>{this.setState({ usermob: data.usermob })})
     }
+
+    AddUser(){
+      fetch(this.api+'/UserFormMobile')
+      .then(res=>res.json())
+      .then(data=>{this.setState({msgMemberMob: data.msgMemberMob})})
+      }
 
   Add=async () =>
   {
@@ -51,14 +61,14 @@ export default class Profil extends Component
     })
   }
 
-  getUsers(){
-    fetch(this.api+'users/tab')
-    .then(res=>res.json())
-    .then(data=>{this.setState({
-      logintab : data.login,
-      pswtab:data.psw
-    })})
-  }
+  // getUsers(){
+  //   fetch(this.api+'users/tab')
+  //   .then(res=>res.json())
+  //   .then(data=>{this.setState({
+  //     logintab : data.login,
+  //     pswtab:data.psw
+  //   })})
+  // }
 
   render()
   {
@@ -115,9 +125,11 @@ export default class Profil extends Component
          <Text style={{color:'#F9F9F9' , fontWeight:'bold', fontSize:18}}>Add Member</Text>
          </TouchableOpacity>
 
-         <TabUsers/>
+         {(this.state.msgMemberMob === "pas de message")?null:<Text style={styles.err}>{this.state.msgMemberMob}</Text>}
 
-         {[...this.state.logintab].map((e,i)=>
+         {/* <TabUsers/> */}
+
+         {/* {[...this.state.logintab].map((e,i)=>
          <View style={styles.flexo}>
            <View style={styles.row}>
              <Text style={{color:"#007bff" , fontWeight:"bold"}}>Login</Text>
@@ -127,7 +139,7 @@ export default class Profil extends Component
              <Text style={{color:"#007bff" , fontWeight:"bold"}}>Password</Text>
              <Text>{this.state.pswtab[i]}</Text>
              </View>
-         </View>)}
+         </View>)} */}
          {/* </ScrollView> */}
       </View>
     );
@@ -191,6 +203,12 @@ const styles = StyleSheet.create({
   flexo: {
     display:"flex",
     flexDirection:"row"
+  },
+  err: {
+    color: "red",
+    textAlign:"center",
+    marginBottom:20,
+    fontWeight:"bold"
   },
   row: {
     margin:30
