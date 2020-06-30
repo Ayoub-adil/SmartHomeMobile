@@ -1,28 +1,31 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable semi */
+/* eslint-disable space-infix-ops */
+/* eslint-disable comma-dangle */
+/* eslint-disable quotes */
+/* eslint-disable keyword-spacing */
+/* eslint-disable no-trailing-spaces */
 import React, { Component } from 'react';
 import {
   View,
   Button,
   StyleSheet, 
-  Text
+  Text,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default class Disconnect extends Component
 {
-  // constructor(props){
-  //   super(props);
-  //   this.api='http://192.168.1.12:5000'
-  //   this.disconnect=this.disconnect.bind(this)
-  //   }
-  //   disconnect(){
-  //     // fetch(this.api+'/disconnectMob')
-  //     fetch(this.api+'/disconnectMob')
-	// 	  .then(res=>res.json())
-  //     .then(data=>{
-  //       this.setState({ islogged : data.islogged })
-  //       data.islogged?null:this.props.navigation.navigate('Landing')
-  //   })
-  //   }
+  constructor(props){
+    super(props);
+    this.api='http://192.168.1.12:5000'
+    this.disconnect=this.disconnect.bind(this)
+    }
+    disconnect(){
+      fetch(this.api+'/disconnectMob');
+      this.props.navigation.navigate('Landing')
+    }
 
   render()
   {
@@ -30,7 +33,11 @@ export default class Disconnect extends Component
     <View style={styles.container}>
       <FontAwesome5 style={styles.icon} size={80} name="frown" solid />
       <Text style={styles.txt}>Are you sure you want to disconnect from the application ?</Text>
-      <Button style={styles.btn} title="Disconnect"/>
+      <Button 
+        style={styles.btn} 
+        title="Disconnect"
+        onPress={() => this.disconnect()}
+        />
     </View>
     );
   }
