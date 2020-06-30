@@ -50,7 +50,7 @@ export default class kitchen extends Component{
       this.setState({ rooom: data.room })
     })
     fetch(this.api+'/home/window').then(res=>res.json()).then(data=>{
-      this.setState({ window: data.bedroom[this.state.rooom] })
+      this.setState({ window: data.kitchen[this.state.rooom] })
     })  
   }
   
@@ -70,11 +70,11 @@ export default class kitchen extends Component{
          <View style={styles.device}>
            <Text style={{fontSize:20, margin: 10}}>Window :</Text>
             <Switch 
-              trackColor={{true: '#7AAFFD', false: 'grey'}}
-              thumbColor='#007bff'
-              value={this.state.window==='opened'?true:false} 
-              onValueChange={this.changeWindowState}
-            />
+            trackColor={{true: '#7AAFFD', false: 'grey'}}
+            thumbColor='#007bff'
+            value={this.state.window==='opened'?true:false} 
+            onValueChange={this.changeWindowState} 
+          />
            <Text style={{fontSize:25, margin: 10}}>{this.state.window}</Text>
          </View>
 

@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable quotes */
@@ -13,8 +14,10 @@ import {
   StyleSheet,
   Text,
   Slider,
+  Button,
+  Alert,
 } from 'react-native';
-import { Switch } from 'react-native-gesture-handler';
+import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default class bedroom extends Component{
@@ -39,9 +42,9 @@ export default class bedroom extends Component{
 
 
     this.changeLampState=this.changeLampState.bind(this) 
-    // this.handleTemperature=this.handleTemperature.bind(this) 
+    this.handleTemperature=this.handleTemperature.bind(this) 
     // this.handleTemperatureinput=this.handleTemperatureinput.bind(this) 
-    // this.changeTemperature=this.changeTemperature.bind(this) 
+    this.changeTemperature=this.changeTemperature.bind(this) 
     this.changeAirConditionerState=this.changeAirConditionerState.bind(this) 
     this.changeWindowState=this.changeWindowState.bind(this) 
   }
@@ -86,17 +89,15 @@ export default class bedroom extends Component{
 
         
         <View style={styles.device}>
-          <Text style={styles.text}>Climatiseur : {this.state.climatiseur}</Text>
+          <Text style={styles.text}>Air Conditionner : {this.state.climatiseur}</Text>
+          
           <Switch 
             trackColor={{true: '#7AAFFD', false: 'grey'}}
-            thumbColor='#007bff'
+            thumbColor="#007bff"
             value={this.state.climatiseur==="on"?true:false} 
             onValueChange={this.changeAirConditionerState} 
           />
-        </View>
-        <View style={styles.device}>
-          <Text style={styles.text}>Temperature</Text>
-          <Text style={styles.deg}>{this.state.temperature}°C</Text>
+          {this.state.climatiseur==='on'?
           <Slider 
             style={styles.slider} 
             value={this.state.temperature} 
@@ -105,15 +106,28 @@ export default class bedroom extends Component{
             step={1} 
             minimumTrackTintColor="#FF8D8D" 
             thumbTintColor="#FF8D8D" 
-            // onValueChange={(slideValue) => this.setState({slideValue})} 
+            onValueChange={this.handleTemperature} 
           />
+          :null}
+
+          {this.state.climatiseur==='on'?
+          <TouchableOpacity style={styles.button} onPress={()=>this.changeTemperature()}>
+            <Text>Adjust to : {this.state.temp}</Text>
+          </TouchableOpacity>
+          :null}
+
+        </View>
+        <View style={styles.device}>
+          <Text style={styles.text}>Temperature</Text> 
+          <Text style={styles.deg}>{this.state.temperature}°C</Text>
+          
         </View>
 
         <View style={styles.device}>
           <Text style={styles.text}>Light : {this.state.lamp}</Text>
           <Switch 
             trackColor={{true: '#7AAFFD', false: 'grey'}}
-            thumbColor='#007bff'
+            thumbColor="#007bff"
             value={this.state.lamp==="on"?true:false} 
             onValueChange={this.changeLampState} 
           />
@@ -123,14 +137,13 @@ export default class bedroom extends Component{
           <Text style={styles.text}>Window : {this.state.window}</Text>
           <Switch 
             trackColor={{true: '#7AAFFD', false: 'grey'}}
-            thumbColor='#007bff'
+            thumbColor="#007bff"
             value={this.state.window==='opened'?true:false} 
             onValueChange={this.changeWindowState} 
           />
         </View>
 
 
-      {/* <Button title="change" onPress={this.change}></Button> */}
       </ScrollView>
     </View>
     );
@@ -140,35 +153,25 @@ export default class bedroom extends Component{
   changeLampState() {
     fetch(this.api+'/change/lamp');
     this.fill();
-    //console.log(this.state.temperature)
   }
 
   handleTemperature(value) {
     this.setState({ temp: +value }); 
-    console.log('slider '+value)  
-    // this.changeTemperature(); 
-  }
-  handleTemperatureinput(e) {
-    this.setState({ temp: e.target.value }); 
-    console.log('input '+e.target.value)  
-    // this.changeTemperature(); 
   }
 
-  // async changeTemperature() {
-  //   let result=await fetch('/change/temperature',{
-  //     'method':'POST',
-  //     'mode': 'no-cors',
-  //     'headers':{
-  //       'accept':'application/json',
-  //       'content-type':'application/json'
-  //     },
-  //     'body':JSON.stringify({
-  //       tmp:this.state.temp
-  //     })
-  //   });
-  //   this.getTemperature();
-  //   //console.log(result);
-  // }
+  changeTemperature() {
+    fetch(this.api+'/change/temperatureMob', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        tmp:this.state.temp,
+      })
+    });
+    this.fill();
+  }
 
   changeAirConditionerState() {
     fetch(this.api+'/change/airConditioner');
