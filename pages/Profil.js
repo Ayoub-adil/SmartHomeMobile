@@ -20,14 +20,14 @@ export default class Profil extends Component
       msgMemberMob : "pas de message",
     };
 
+    this.AddUser();
+    // this.AddUser=this.AddUser(this);
+
     this.session();
     this.session=this.session.bind(this);
-
-    this.AddUser();
-    this.AddUser=this.AddUser.bind(this)
     
-    // this.getUsers();
-    // this.getUsers=this.forceUpdate.bind(this)
+    this.getUsers();
+    this.getUsers=this.forceUpdate.bind(this)
 
   }
   setModalVisible = (visible) => {
@@ -59,16 +59,17 @@ export default class Profil extends Component
         psw:this.state.psw,
       })
     })
+    this.AddUser();
   }
 
-  // getUsers(){
-  //   fetch(this.api+'users/tab')
-  //   .then(res=>res.json())
-  //   .then(data=>{this.setState({
-  //     logintab : data.login,
-  //     pswtab:data.psw
-  //   })})
-  // }
+  getUsers(){
+    fetch(this.api+'users/tab')
+    .then(res=>res.json())
+    .then(data=>{this.setState({
+      logintab : data.login,
+      pswtab:data.psw
+    })})
+  }
 
   render()
   {
@@ -129,7 +130,7 @@ export default class Profil extends Component
 
          {/* <TabUsers/> */}
 
-         {/* {[...this.state.logintab].map((e,i)=>
+         {[...this.state.logintab].map((e,i)=>
          <View style={styles.flexo}>
            <View style={styles.row}>
              <Text style={{color:"#007bff" , fontWeight:"bold"}}>Login</Text>
@@ -139,7 +140,7 @@ export default class Profil extends Component
              <Text style={{color:"#007bff" , fontWeight:"bold"}}>Password</Text>
              <Text>{this.state.pswtab[i]}</Text>
              </View>
-         </View>)} */}
+         </View>)}
          {/* </ScrollView> */}
       </View>
     );
