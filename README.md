@@ -15,7 +15,7 @@
 ## to install the application on your device: <br>
   connect you device (emulator or physical) <br>
     to open your emulator on cmd go the project and: <br>
-      emulator myavd emulatoName <br>
+      emulator -avd emulatoName <br>
     to connect your physical device <br>
       enable USB Debugging <br>
   on cmd go to the project and:<br>
