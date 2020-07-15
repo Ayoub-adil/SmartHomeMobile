@@ -9,6 +9,7 @@
 ## The first step is to clone this project 
 
 ## on cmd go to the project and: <br>
+  npm install <br>
   npm install -g react-native-cli <br>
   npm install @react-navigation/native <br>
   npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view <br>
