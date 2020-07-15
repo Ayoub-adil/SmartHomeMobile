@@ -10,7 +10,6 @@
   npm install @react-navigation/bottom-tabs <br>  
   npm install --save react-native-vector-icons <br>
   
-  
 <h2> on your pc set the ip address manually to 192.168.1.12 <br> </h2>
 
 ## to install the application on your device: <br>
