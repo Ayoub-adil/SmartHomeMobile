@@ -6,10 +6,14 @@
   npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view <br>
   npm install @react-navigation/bottom-tabs <br>
   npm install @react-navigation/stack <br>
-
+  npm i react-native-keyboard-aware-scrollview --save <br>  
+  npm install @react-navigation/bottom-tabs <br>  
+  npm install --save react-native-vector-icons <br>
+  
+  
 <h2> on your pc set the ip address manually to 192.168.1.12 <br> </h2>
 
-to install the application on your device: <br>
+## to install the application on your device: <br>
   connect you device (emulator or physical) <br>
     to open your emulator on cmd go the project and: <br>
       emulator myavd emulatoName <br>
