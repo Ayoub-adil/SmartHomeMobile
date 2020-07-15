@@ -1,5 +1,13 @@
 # SmartHomeMobile
 
+## What you need to have on your machine : <br>
+- Android studio <br>
+- Text Editor <br>
+- Internet connection <br>
+- an emulator or a real mobile device
+
+## The first step is to clone this project 
+
 ## on cmd go to the project and: <br>
   npm install -g react-native-cli <br>
   npm install @react-navigation/native <br>
